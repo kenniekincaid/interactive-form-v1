@@ -16,7 +16,7 @@ button {
 
 body {
   font: 1em/1.5;
-  color: rgba(6, 49, 68, 0.9);
+  color: rgba(21, 3, 37, 0.9);
 	background: #e6f0f5;
 }
 
@@ -40,8 +40,8 @@ a {
 
 form {
 	padding: .875em 1.875em 1.875em;
-	background: #9bdcf8;
-	border: 2px solid rgba(8, 63, 87, 0.7);
+	background: #ed96f5;
+	border: 2px solid rgba(77, 10, 71, 0.7);
 	border-radius: 4px;
 }
 
@@ -64,7 +64,7 @@ button {
 legend {
 	font-weight: 500;
 	padding-top: .5em;
-	border-top: 2px solid rgba(8, 63, 87, 0.6);
+	border-top: 2px solid rgba(13, 1, 15, 0.6);
 	margin-bottom: 1.125em;
 }
 
@@ -90,14 +90,14 @@ input {
 	font-weight: 500;
 	padding: .8em;
 	background: #e9f6fb;
-	border: 2px solid #b0d3e2;
+	border: 2px solid #e470de;
 	border-radius: 4px;
 	outline: none;
 }
 
 input:focus {
 	background: #fff;
-	border-color: #5e97b0;
+	border-color: #e9d6e8;
 	transition: border-color .4s, background-color .4s;
 }
 
@@ -109,7 +109,7 @@ input[type="radio"] {
 button {
 	color: #fff;
 	padding: .55em 1.25em;
-	background: #083f57;
+	background: rgba(77, 10, 71, 0.7);
 	margin: 1.25em 0 .5em;
 	cursor: pointer;
 	border: 2px solid black;
@@ -118,7 +118,7 @@ button {
 }
 
 button:hover {
-	background: #0887bd;
+	background: rgba(155, 21, 143, 0.7);
 	border: 2px solid #f4f6f6;
 }
 
