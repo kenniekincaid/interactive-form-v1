@@ -1,9 +1,8 @@
-
 //Set Focus on the first text field section:
 $('#name').focus(); //Focuses cursor to Name text field on page load.
 
 //"Job Role" section:
-$('#other-title').hide(); //The Other text field is hidden on page load. Could have used the .trigger(change) method instead on the function below.
+$('#other-title').hide(); //Initially hide the job role for Javascript. It will dispaly if JS is disabled.
 $('#title').change(function() { //Function and event handler to control when text field is hidden or revealed.
     const $title = $('#title').val(); //Assigns all under under this ID to this variable. The '$' denotes that it's a jQuery variable.
     if ($title==='other') { // If test is true... 
@@ -11,7 +10,7 @@ $('#title').change(function() { //Function and event handler to control when tex
     } else {  //The following will take place is the test proves false...                   
         $('#other-title').hide(); //The text field remains hidden.
     }
-});//I chose not to attach .trigger('change') here because the first appearance of the hide method came from my brain without googling.
+});//.trigger('change');
 
 //"T-shirt Info" section:
 
