@@ -1,32 +1,48 @@
-//$ identifies jQuery; '#...' identifies value is from the HTML page; .focus is straightforward. 
-$('#name').focus(); // Cursor automatically appears in the Name: input area when page loads.
 
-//Text field revealed when the "Other" option is selected.
- // hides the text field. I want it hidden until 'Other' is clicked.
- $('#other-title').hide();
+//Set Focus on the first text field section:
+$('#name').focus(); //Focuses cursor to Name text field on page load.
 
-$('#title').change(function() { // I need a formula here that will target the value or text of the 'Other' option and unhide the text area when clicked.
-    const title = $('#title').val(); //assigns the value of all options under the select ID element to the variable.
-    if (title==='other') { //condition based on if the option value is strictly other... 
-        $('#other-title').slideDown(700); // the input text field will show...
-    } else { // otherwise...
-        $('#other-title').hide(); // the input text field will remain hidden.
+//"Job Role" section:
+$('#other-title').hide(); //The Other text field is hidden on page load. Could have used the .trigger(change) method instead on the function below.
+$('#title').change(function() { //Function and event handler to control when text field is hidden or revealed.
+    const $title = $('#title').val(); //Assigns all under under this ID to this variable. The '$' denotes that it's a jQuery variable.
+    if ($title==='other') { // If test is true... 
+        $('#other-title').fadeIn(1000); //...the text field will show.
+    } else {  //The following will take place is the test proves false...                   
+        $('#other-title').hide(); //The text field remains hidden.
     }
-}); //could also use .trigger(change); and remove the very first $('#other-title').hide();
+});//I chose not to attach .trigger('change') here because the first appearance of the hide method came from my brain without googling.
 
-// $('.selDiv option:contains("Other")').click(function() {
-//         if  ($) {
-//             $('other-title').show();
-//         } else {
-//             $('other-title').none();
-//         }
-        
-            
+//"T-shirt Info" section:
 
-// });
+//Brainstorming below:
+$('#design').change(function() {
+    const $shirtDesign = $('#design').val();
+    const $shirtColor = $('#color').val();
+    // const jspunsColors = $('#color').val();
+    // const heartjsColors = $('#color').val();
+        if ($(this).val()=='js puns') {
+            $('#selectlist')[0,1,2].show();
+            $('#selectlist')[3,4,5].hide();
+            // $('#color').hide('tomato', 'steelblue', 'dimgrey');
+            // $('#color').show('cornflowerblue', 'darkslategrey', 'gold').hide('tomato', 'steelblue', 'dimgrey');
+            // $('#color').val('tomato','steelblue','dimgrey').hide();
+        } else {
+        if ($(this).val()=='heart js') {
+            $('#selectlist')[0,1,2].hide();
+            $('#selectlist')[3,4,5].show();
+            // $('#color').hide('cornflowerblue', 'darkslategrey', 'gold');  
+                 // $('#color').show('tomato', 'steelblue', 'dimgrey').hide('cornflowerblue', 'darkslategrey', 'gold');
+                // $('#color').val('cornflowerblue','darkslategrey','gold').hide();
+            }
+        }
+}).trigger('change');
+    
+//"Register for Activities" section:
 
+//"Payment Info" section:
 
+//Form validation section:
 
+//Form validation messages:
 
-
-//document.addEventListener('click').show('#other-title');
