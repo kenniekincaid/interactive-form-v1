@@ -27,12 +27,75 @@ $('#design').change(function() {//function with event to take place when design 
         $('#color option:contains("JS shirt only")').show();// show t-shirts with heart js
     }
 }); 
-    
-//"Register for Activities" section:
 
-//"Payment Info" section:
+//"Register for Activities" section:
+let $domElement = $('.activities').append('<span id="totalCost"></span>');//Created a DOM element.
+$('.activities').append($domELement); //Appends global element after the last child nested under activities.
+
+$('.activities :checkbox').on('change', function() {
+    let totalActivityCost = 0; //Global variable to store total activity cost, initially set to 0.
+    let parentTextContent = $(this)[0].parentElement.innerText();
+    // let parentTextContent = $('.activities label').innerText(); //mine
+    let dollarIndex = parentLabelText.indexOf('$'); //focuses on the values containing a $ sign.
+    let activityCost = parentTextContent.slice(dollarIndex + 1);
+    // let inputElement = $('.activities :checkbox').val('$'); // to find the text content to index
+
+        if ($(this)[0].checked) {
+            totalActivityCost += parseInt(activityCost);
+        } else {
+            totalActivityCost += parseInt(activityCost);
+        }
+    // for(let i=0; i < activities.length; i++) {//loops over all of the checkboxes
+    //     let activity = activities[i];
+    //     let activityText = activity.parentElement.innerText; //references the text of the parent element
+    //     let dollarValue = parseInt(activityText.slice(activityText.indexOf('$') + 1)); //Finds value AFTER the $ sign and grabs the numbers after it.
+    // if ($('input[name=' + activity.name + ']').prop('checked')) {
+    //     totalSum += dollarValue;
+    // }
+    // }
+    let spanTotalActivity = $('#totalCost'); //assigns the total cost to the span variable.
+    spanTotalActivity.text("Total: $" + totalActivityCost); //adds text before the total cost.
+});   
+
+
+// $('.activities').change(function() {
+//     let totalActivityCost = 0; //Global variable to store total activity cost - initially set to 0.
+//     let $activities = $('.activities input[type=checkbox]');
+//         for(let i=0; i < activities.length; i++) {//loops over all of the checkboxes
+//             let activity = activities[i];
+//             let activityText = activity.parentElement.innerText; //references the text of the parent element
+//             let dollarValue = parseInt(activityText.slice(activityText.indexOf('$') + 1)); //Finds value AFTER the $ sign and grabs the numbers after it.
+//         if ($('input[name=' + activity.name + ']').prop('checked')) {
+//             totalSum += dollarValue;
+//         }
+//         }
+//     let totalCostSpan = $('#totalCost');
+//     totalCostSpan.text("Total: $" + totalActivityCost);
+
+// let parentText = 
+// let activities
+    
+   
+
+
+//"Payment Info" section: HINT - it's just like to T-shirt section:
+// $('#design option:first').hide(); //hides the 'Select Theme' option from drop-down menu.
+// $('#color option').hide(); //hides all other options from view.
+// // $('#color').hide();//Extra credit to hide color field until designs are chosen.
+
+// $('#design').change(function() {//function with event to take place when design is selected/changed.
+//     $('#design option:selected').val();//gets the value of the design options.
+//     $('#color option').hide(); //hides all other options from view.
+//     if ($('#design option:selected').val() === 'js puns') {
+//         $('#color option:contains("JS Puns shirt only")').show(); //show t-shirts with js puns
+//     } else {
+//         $('#color option:contains("JS shirt only")').show();// show t-shirts with heart js
+//     }
+// }); 
+
 
 //Form validation section:
+
 
 //Form validation messages:
 
