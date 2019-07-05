@@ -23,16 +23,19 @@ $('#design').change(function() {//function with event to take place when design 
     $('#color option').hide(); //hides all other options from view.
     if ($('#design option:selected').val() === 'js puns') {
         $('#color option:contains("JS Puns shirt only")').show(); //show t-shirts with js puns
+        $('#color').val("cornflowerblue");
     } else {
         $('#color option:contains("JS shirt only")').show();// show t-shirts with heart js
+        $('#color').val("tomato");
     }
 }); 
 
 //"Register for Activities" section:
-let $domElement = $('.activities').append('<span id="totalCost"></span>');//Created a DOM element.
+let totalCostSpan = $('.activities').append('<span id="totalCost">Total Cost:</span>');//Created total cost DOM element.
 $('.activities').append($domELement); //Appends global element after the last child nested under activities.
 
 $('.activities :checkbox').on('change', function() {
+// $('.activities :checkbox').on('change', function() {
     let totalActivityCost = 0; //Global variable to store total activity cost, initially set to 0.
     let parentTextContent = $(this)[0].parentElement.innerText();
     // let parentTextContent = $('.activities label').innerText(); //mine
