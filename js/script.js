@@ -33,24 +33,58 @@ $('#design').change(function() {//function with event to take place when design 
 }); 
 
 //"Register for Activities" section:
-let totalCostSpan = $('.activities').append('<span id="totalCost"></span>');//Created total cost DOM element nd appended after last child.
-$('.activities').append(totalCostSpan);
-// $('#totalCost').hide();
 
-// let totalActivityCost = 0;
-// $('.activities input:checkbox').change(function () {
-//     let inputElement = '';
-//     let parentTextContent = '';
-//     let dollarIndex = '$';
-//     let activityCost = '.slice()';
-//     if ('inputElement :checked') {
-//         //add he cost of the curently selected activity totalCost
-//     }else{
-//         //subtract the cost
-//     }
-// });
+//Creating an element to display the total Activity Cost...
+const $totalCostSpan = $('<span id="totalCost"></span>'); //Creates the total cost span.
+$('.activities').append($totalCostSpan); //On webpage, appends span at end of activity section.
+let totalActivityCost = 0;
+
+//Listening to changes in the activity section, and...
+    //Updating and displaying the total activity cost part 1.
+$('.activities [type="checkbox"]').on('change', function () { //Change event listener
+    let $checkboxesClicked = $(this); //clicked DOM input element.
+    let parentActivityLabel = $checkboxesClicked.parent(); //Parent text content label element.
+    let textContent = parentActivityLabel.text(); //Text within the parent label element.
+    let dollarIndex = textContent.indexOf('$'); //Indexes starting at the $.
+    let activityCost = textContent.slice(dollarIndex + 1, textContent.length); //Grabs text after the $.
+    let cost = parseInt(activityCost); 
+    //Updating and displaying the total activity cost part 2  
+    if ($checkboxesClicked.is(':checked')) { //Condition to execute with user action...
+        totalActivityCost += cost; //Add the cost of the curently selected activity.
+        $totalCostSpan.html("Total: $" + totalActivityCost);
+    } else {
+        totalActivityCost -= cost; //otherwise, subtract the cost
+        $totalCostSpan.html("Total: $" + totalActivityCost);
+    }//Codes are working up to this point! :-D
+
+    //Disabling conflicting activities part 1: Variables
+    let emDashIndex = textContent.indexOf('—'); //identifies info starting at the dash
+    let commaIndex = textContent.indexOf(','); //identifies info by the comma
+    let dayTimeText = textContent.slice(emDashIndex + 1, commaIndex); //selects the text between the dash and comma
+    if (dayTimeText.includes('$')) { //
+        dayTimeText = 'no date given'; //For Main, there is no date or time info.
+    }
+    // console.log('textContent: ' +textContent);
+    // console.log('dayTimeText: ' +dayTimeText);
+    // console.log('cost: ' +cost);
+    // Disabling conflicting activities part 2: 
+    // Loop over all checkboxes in the activity section...
+    let $activityCheckboxes = $('input[type="checkbox"]'[i]); // Targeting the the activity input element
+    for (let j=0; j<$activityCheckboxes.length; j++) { //loops over all of the checkbox input elements.
+        let checkboxText = $activityCheckboxes.eq(j).parent().text(); //targets activity input element at current iteration.
+            if (checkboxText.includes(dayTimeText) && checkboxText !== textContent) {//condition that checkboxes are clicked but not self
+                if($activityCheckboxes.is(':checked')) {
+                    $(':checkbox')[i].disabled = true;
+            } else {
+                $(':checkbox')[i].disabled = false;
+            }
+        }         
+    }  
+});
 
 
+
+//PAYMENT SECTION:
 //"Payment Info" section: HINT - it's just like to T-shirt section:
 $('#payment').show().val("credit card");//credit card is the default view.
 $('#payment option:contains("Select Payment Method")').hide(); //hides the 'Select Payment Method' option from drop-down menu.
@@ -66,41 +100,30 @@ $('#payment').change(function() {
         $('div p:contains("PayPal")').hide();
         $('div p:contains("Bitcoin")').hide();
     } else if ($paymentOptions === "paypal") {
-        $('div p:contains("PayPal")').fadeIn(700).show();
+        $('div p:contains("PayPal")').slideDown(700).show();
         $('div p:contains("Bitcoin")').hide();
         $('#credit-card').hide();
     } else if ($paymentOptions === "bitcoin") {
-        $('div p:contains("Bitcoin")').fadeIn(700).show();
+        $('div p:contains("Bitcoin")').slideDown(700).show();
         $('#credit-card').hide();
         $('div p:contains("PayPal")').hide();
     }
 });
 
-//VALIDATION ERRORS:
-
-
-
-//ALTERNATE PAYMENT RESOLUTION:
-// $('#payment').change(function() {
-//     const $paymentOptions = $(this).val();
-//     // if ($paymentOptions === "credit card") {
-//     //     // $('#payment option').hide().val("paypal");
-//     //     // $('#payment option').hide().val("bitcoin");
-//     if ($paymentOptions === "paypal") {
-//         $('#payment option').show().val("paypal");
-//         $('#payment option').hide().val("bitcoin");
-//         $('#payment option').hide().val("credit card");
-//         $('#credit-card').hide();
-//     } else if ($paymentOptions === "bitcoin") {
-//         $('#payment option').show().val("bitcoin");
-//         $('#payment option').hide().val("credit card");
-//         $('#credit-card').hide();
-//         $('#payment option').hide().val("paypal");
-//     }
-// });
-
+//VALIDATION & MESSAGES:
 //Form validation section:
+// if credit card selected, then validate these 3 fields
+// name = 
+// email = 
+// activitySection = 
+// creditCardNumber = 
+// zipCode = 
+// CVV = 
 
+// $('#credit-card').validateCreditCard(function(result)
+//     {
+    
+//     });
 //Form validation messages:
 
 });
