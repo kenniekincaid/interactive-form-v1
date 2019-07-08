@@ -41,7 +41,7 @@ let totalActivityCost = 0;
 
 //Listening to changes in the activity section, and...
     //Updating and displaying the total activity cost part 1.
-$('.activities [type="checkbox"]').on('change', function () { //Change event listener
+$('.activities [type="checkbox"]').on('change', function (e) { //Change event listener
     let $checkboxesClicked = $(this); //clicked DOM input element.
     let parentActivityLabel = $checkboxesClicked.parent(); //Parent text content label element.
     let textContent = parentActivityLabel.text(); //Text within the parent label element.
@@ -62,23 +62,23 @@ $('.activities [type="checkbox"]').on('change', function () { //Change event lis
     let commaIndex = textContent.indexOf(','); //identifies info by the comma
     let dayTimeText = textContent.slice(emDashIndex + 1, commaIndex); //selects the text between the dash and comma
     if (dayTimeText.includes('$')) { //
-        dayTimeText = 'no date given'; //For Main, there is no date or time info.
+        dayTimeText = 'no date given';
     }
-    // console.log('textContent: ' +textContent);
-    // console.log('dayTimeText: ' +dayTimeText);
-    // console.log('cost: ' +cost);
-    // Disabling conflicting activities part 2: 
-    // Loop over all checkboxes in the activity section...
-    let $activityCheckboxes = $('input[type="checkbox"]'[i]); // Targeting the the activity input element
-    for (let j=0; j<$activityCheckboxes.length; j++) { //loops over all of the checkbox input elements.
-        let checkboxText = $activityCheckboxes.eq(j).parent().text(); //targets activity input element at current iteration.
+    //Disabling conflicting activities part 2: 
+    let $activityCheckboxes = $('.activities [type="checkbox"]'); // Targeting the the activity input element
+    for (let i=0; i<$activityCheckboxes.length; i++) { //loops over all of the input checkboxes.
+        let checkboxText = $activityCheckboxes.eq(i).parent().text(); //targets activity input element at current iteration.
             if (checkboxText.includes(dayTimeText) && checkboxText !== textContent) {//condition that checkboxes are clicked but not self
-                if($activityCheckboxes.is(':checked')) {
-                    $(':checkbox')[i].disabled = true;
-            } else {
-                $(':checkbox')[i].disabled = false;
-            }
-        }         
+                if($(e.target).is(':checked')) {
+                    $('.activities input')[i].disabled = true;
+                     //will disable the matching activity
+                } else {
+                    $('.activities input')[i].disabled = false;//will enable the matching activity
+                //     $('.activities input')[i].enabled = true; //will disable the matching activity
+                // } else {
+                //     $('.activities input')[i].enabled = false;//will enable the matching activity
+                }
+        }
     }  
 });
 
@@ -111,7 +111,7 @@ $('#payment').change(function() {
 });
 
 //VALIDATION & MESSAGES:
-//Form validation section:
+// Form validation section:
 // if credit card selected, then validate these 3 fields
 // name = 
 // email = 
@@ -124,6 +124,6 @@ $('#payment').change(function() {
 //     {
     
 //     });
-//Form validation messages:
+// Form validation messages:
 
 });
