@@ -1,102 +1,8 @@
 $(document).ready(function() {//Codes will run when JS script is ready to execute.
-
-// //FORM VALIDATION: Wait for the DOM to be ready!
-// $(function() { //Initialize form validation on the registration form.
-//     $('form').validate({
-        //Select and store the 4 text input variables...
-        const nameInput = document.getElementById("user_name");
-        const emailInput = document.getElementById("email");
-        const activityInput = document.getElementbyID(".activities").parent();
-        const creditCardInput = doicument.getElementById("credit-card")
-
-        if ($('input [type="text"]' <= 0)) {
-            return('invalid');
-        };
-
-        if ($('input [type="email"]').match()
-        
-        //Contains upper and lower case letters:
-        function isValidName(name){
-            return /^[a-zA-Z '.-]*$/.test(name)
-        }
-
-        //Must be a valid email address:
-        function isValidEmail(email) {
-            return /^[^@]+@[^@.]+\.[a-z]+$/i.test(email)
-        }
-
-        //Activity section must be completed:
-        function isValidActivity(activity) {}
-
-        //If paid via CC, valid info needed:
-        if ($('#payment').val("credit-card")) {
-            function isvalidCreditCard(creditcard) {
-                return /(^(4|5)\d{3}-?\d{4}-?\d{4}-?\d{4}|(4|5)\d{15})|(^(6011)-?\d{4}-?\d{4}-?\d{4}|(6011)-?\d{12})|(^((3\d{3}))-\d{6}-\d{5}|^((3\d{14})))/.test(creditcard)
-            // var isValidZip = /(^\d{5}$)|(^\d{5}-\d{4}$)/.test("90210");
-            //     return isValidZip;
-            }
-        }
-
-        function showOrHideTip(show, element) {
-            //show element when show is true, hide when false
-            if (show) {
-                element.style.display = "inherit";
-            } else {
-                element.style.display = "none:"
-            }
-        }
-        //Closure
-        function createListener(validator) {
-            return e => {
-                const text = e.target.value;
-                const valid = validator(text);
-                const showTip = text !== "" && !valid;
-                const toolTip = e.target.nextElementSibling;
-                showOrHideTip(showTip, tooltip);
-            };
-        }
-//     })
-// });
-
-//Every time user types, the input is validated.
-nameInput.addEventListener("input", createListener(isValidName));
-emailInput.addEventListener("input", createListener(isValidEmail));
-activityInput.addEventListener("input", createListener(isValidActivity));
-creditCardInput.addEventListener("input", createListener(isvalidCreditCard));
-
-// $(function() { //Initialize form validation on the registration form.
-//     $('form').validate({
-//         //specify validation rules
-//         rules: {
-//             //name attribute of input field on left side : rule on right side.
-//             user_name: {
-//                 required: true,
-//                 user_name: true,
-//                 regex: '\S+(?:\s(?!Jr\.)\S+)*'
-                
-//             },
-//             user_email: {
-//                 required: true,
-//                 user_email: true,
-//                 regex: ''
-//             },      
-//         },
-//         messages: {
-//             user_name:"Please enter your name",
-//             user_email: "Please enter a valid email address",
-//         },
-//         registerHandler: function(form) {
-//             form.register();
-//         }
-//     })
-// });
-
-// Form validation messages:
-
-
-
  //Start of Project:   
 $('#name').focus(); //Set Focus on the first text field section:
+});/* >>>> DO NOT DELETE!!! DOCUMENT LOAD CLOSURE... <<<<< */
+
 
 //"Job Role" section:
 $('#other-title').hide(); //Initially hide the job role for Javascript. It will dispaly if JS is disabled.
@@ -113,7 +19,7 @@ $('#title').change(function() { //Function and event handler to control when tex
 $('#design option:first').hide(); //hides the 'Select Theme' option from drop-down menu.
 $('#color option').hide(); //hides all other options from view.
 $('#colors-js-puns').hide();//Extra credit to hide color field until designs are chosen.
-
+//CHANGE FUNCTION:
 $('#design').change(function() {//function with event to take place when design is selected/changed.
     $('#design option:selected').val();//gets the value of the design options.
     $('#color option').hide(); //hides all other options from view.
@@ -178,8 +84,6 @@ $('.activities [type="checkbox"]').on('change', function (e) { //Change event li
     }  
 });
 
-
-
 //PAYMENT SECTION:
 //"Payment Info" section: HINT - it's just like to T-shirt section:
 $('#payment').show().val("credit card");//credit card is the default view.
@@ -208,7 +112,169 @@ $('#payment').change(function() {
 
 
 
+//FORM VALIDATION & ERROR MESSAGES:
+const validName = () => { //function to validate name
+    let  $nameInput = $('#name');
+    //let regex = /^-----$/;
+    let $validName = $nameInput.val();
+    if($validName) {
+        $nameInput.removeClass('invalid').addClass('valid');
+    return true;
+    } else {
+        $nameInput.removeClass('valid').addCLass('invalid');
+        $nameInput.prev().text('Please enter a valid name').css('color', 'red');
+    } return false;
+}
 
 
 
+$('form').on('submit', function(e) {
+    if ($paymentOptions === "credit card") {
+        e.preventDefault();
+        $('#credit-card').show();
+        $('div p:contains("PayPal")').hide();
+        $('div p:contains("Bitcoin")').hide();
+    } else if ($paymentOptions === "paypal") {
+        e.preventDefault();
+        $('div p:contains("PayPal")').slideDown(700).show();
+        $('div p:contains("Bitcoin")').hide();
+        $('#credit-card').hide();
+    } else if ($paymentOptions === "bitcoin") {
+        e.preventDefault();
+        $('div p:contains("Bitcoin")').slideDown(700).show();
+        $('#credit-card').hide();
+        $('div p:contains("PayPal")').hide();
+    } else if ($paymentOptions === "paypal") {
+        e.preventDefault();
+        $('div p:contains("PayPal")').slideDown(700).show();
+        $('div p:contains("Bitcoin")').hide();
+        $('#credit-card').hide();
+    } else if ($paymentOptions === "bitcoin") {
+        e.preventDefault();
+        $('div p:contains("Bitcoin")').slideDown(700).show();
+        $('#credit-card').hide();
+        $('div p:contains("PayPal")').hide();
+    } else if ($paymentOptions === "bitcoin") {
+        e.preventDefault();
+        $('div p:contains("Bitcoin")').slideDown(700).show();
+        $('#credit-card').hide();
+        $('div p:contains("PayPal")').hide(); 
+    } else {
+            alert('Success! Thanks for registering!')
+        }
+    }
 });
+// & validEmail() & validActivities() & validCreditCard() & validCvv() & validZipcode()
+
+// $('form').validate({//FORM VALIDATION: Wait for the DOM to be ready!
+//     rules: {
+//         name: {
+//             required: true,
+//             minlength: "Name should be at least 3 characters"
+//         },
+//         email: {
+//             required: true,
+//             email: "The email should be in the format: abc@domain.tld",
+//             regex: /^[^@]+@[^@.]+\.[a-z]+$/i.test(email),
+//         },
+//     }
+// });
+
+
+//     //Select and store the 4 text input variables...
+//     const nameInput = document.getElementById("user_name");
+//     const emailInput = document.getElementById("email");
+//     const activityInput = document.getElementById(".activities").parent();
+//     const creditCardInput = document.getElementById("credit-card");
+    
+//         //Contains upper and lower case letters:
+//         function isValidName(name){
+//             return /^[a-zA-Z '.-]*$/.test(name)
+//         }
+
+//         //Must be a valid email address:
+//         function isValidEmail(email) {
+//             return /^[^@]+@[^@.]+\.[a-z]+$/i.test(email)
+//         }
+
+//         //Activity section must be completed:
+//         function isValidActivity() {}
+
+//         //If paid via CC, valid info needed:
+//         if ($('#payment').val("credit-card")) {
+//             function isvalidCreditCard(creditcard) {
+//                 return /(^(4|5)\d{3}-?\d{4}-?\d{4}-?\d{4}|(4|5)\d{15})|(^(6011)-?\d{4}-?\d{4}-?\d{4}|(6011)-?\d{12})|(^((3\d{3}))-\d{6}-\d{5}|^((3\d{14})))/.test(creditcard)
+//             // var isValidZip = /(^\d{5}$)|(^\d{5}-\d{4}$)/.test("90210");
+//             //     return isValidZip;
+//             }
+//         }
+
+//         function showOrHideTip(show, element) {
+//             //show element when show is true, hide when false
+//             if (show) {
+//                 element.style.display = "inherit";
+//             } else {
+//                 element.style.display = "none:"
+//             }
+//         }
+//         //Closure
+//         function createListener(validator) {
+//             return e => {
+//                 const text = e.target.value;
+//                 const valid = validator(text);
+//                 const showTip = text !== "" && !valid;
+//                 const toolTip = e.target.nextElementSibling;
+//                 showOrHideTip(showTip, tooltip);
+//             };
+//         }
+// //     })
+// // });
+
+// //Every time user types, the input is validated.
+// nameInput.addEventListener("input", createListener(isValidName));
+// emailInput.addEventListener("input", createListener(isValidEmail));
+// activityInput.addEventListener("input", createListener(isValidActivity));
+// creditCardInput.addEventListener("input", createListener(isvalidCreditCard));
+
+//Initialize form validation on the registration form.
+//     $('form').validate({
+//         //specify validation rules
+//         rules: {
+//             //name attribute of input field on left side : rule on right side.
+//             user_name: {
+//                 required: true,
+//                 user_name: true,
+//                 regex: '\S+(?:\s(?!Jr\.)\S+)*'
+            
+//             },
+//             user_email: {
+//                 required: true,
+//                 user_email: true,
+//                 regex: ''
+//             },      
+//         },
+//         messages: {
+//             user_name:"Please enter your name",
+//             user_email: "Please enter a valid email address",
+//         },
+//         registerHandler: function(form) {
+//             form.register();
+//         }
+//     })
+// });
+
+// Form validation messages:       
+//  if ($('input [type="text"]' <= 0)) {
+//             return('invalid');
+//         };
+
+//         if ($('input [type="email"]').match()
+
+$("form").submit((e) => {
+        e.preventDefault();
+    if(validFormFields()) {
+        location.reload();
+    }
+});
+
+ 
