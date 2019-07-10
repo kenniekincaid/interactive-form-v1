@@ -106,55 +106,140 @@ $('#payment').change(function() {
 });//Codes are working up to this point! :-D
 
 //FORM VALIDATION & ERROR MESSAGES:
-$('form').on('submit keyup', function(){ //function to initiate on form submission.
-    //keypress, keydown, keyup
-//Name Validation section: The problem with this one is that it 
-const $nameErrorSpan = $('<span id="name_error">  *Please provide a valid first & last name!</span>').css('color','red'); //Creates the total cost span.
-const errorMessage =  true;
-$('#user_name').append($nameErrorSpan);
-$(nameErrorSpan).hide(); //Initially hide the error span. Will set to show only if condition is true.
-    if($("#name").val() == 0 || !test(/^[a-zA-Z]{3,}$/i)) { 
-        $(nameErrorSpan).show();
-        
-    } else {
-        $(nameErrorSpan).hide();
-    } errorMessage = true;
-});
-
+$(function() { //Going for Exceeds
+    //set all variables to false
+    let $nameErrorSpan = false;
+    let $emailErrorSpan = false;
+    let $activityErrorSpan = false;
+    let $creditcardErrorSpan = false;
+    let $cvvErrorSpan = false;
+    let $zipErrorSpan = false;
     
+    // Create spans dynamically if not allowed to place in HTML
+    $('#user_name').append($('<span id="name_error"></span>'));
+    $('#user_email').append($('<span id="email_error"></span>'));
+    $('#user_activity').append($('<span id="activity_error"></span>'));
+    $('#cc-num').append($('<span id="creditcard_error"></span>'));
+    $('#cvv').append($('<span id="cvv_error"></span>'));
+    $('#zip').append($('<span id="zip_error"></span>'));
 
-// //EMAIL:
-//     const $emailErrorSpan = $('<span id="email_error">  *Please provide a valid first & last name!</span>').css('color','red'); //Creates the total cost span.
-// $('#user_email').append($nameErrorSpan);
-//     // $('#nameerror').hide();
-// console.log($emailErrorSpan);
-    //     if($("#email").val() == 3 || "" && /^([a-zA-Z0-9\\.]+)@([a-zA-Z0-9\\-\\_\\.]+)\.([a-zA-Z0-9]+)$/i){
-    //     $("#email").after().append("<span class='errorMessage'>Please provide a valid email!</span>").css('color', 'red');
-    //     errorMessage = true;                             
-    // } else if(!emailReg.test($("#email").val())){
-    //     $("#email").after().append( "<span class='errorMessage'>Please provide a valid email!</span>").css('color', 'red');
-    //     errorMessage = true;
-    //     }  
-    // //activity validation
-    // var validateActivity = "";
-    // //credit card validation
-    // var creditCardInput = $('#cc-num').val() == /(^\(4|5)\d{3}-?\d{4}-?\d{4}-?\d{4}|(4|5)\d{15})|(^(6011)-?\d{4}-?\d{4}-?\d{4}|(6011)-?\d{12})|(^((3\d{3}))-\d{6}-\d{5}|^((3\d{14})))$/;
-    // var errorQuantityDigits = creditCardInput < 13 || creditCardInput > 16 ? $("#cc-num").after().append("<span class='errorMessage'>Please enter a number that is between 13 and 16 digits long.</span>").css('color', 'red')
-    // // var tooManyDigits = (userCardInput > 16) ? "" :"" ;
-    // // $("#cc-num").after().append( "<span class='errorMessage'>Please enter a credit card number.</span>").css('color', 'red');
-    // // if ($("#cc-num").val() < 13 || > 16) {
-    // //     $("#cc-num").after().append( "<span class='errorMessage'>Please enter a number that is between 13 and 16 digits long.</span>").css('color', 'red');
-    // //     errorMessage = true;
-    // // }
-    // //zip code validation
-    // var validateZip = /^([, ]*\d{5})+[, ]*$/;
-    // //cvv validation
-    // var validateCVV = /^\d{3}$/;
+    //Hide all error messages by span ID
+    $('#name_error').hide();
+    $('#email_error').hide();
+    $('#activity_error').hide();
+    $('#creditcard_error').hide();
+    $('#cvv_error').hide();
+    $('#zip_error').hide();
 
+    //Set error messages to show on near input area, focusout function.
+    $('#name').focusout(function(){
+        check_name();
+    });
+    $('#mail').focusout(function(){
+        check_email();
+    });
+    $('#input [type="checkbox]').focusout(function(){
+        check_activity();
+    });
+    $('#cc-num').focusout(function(){
+        check_creditcard();
+    });
+    $('#cvv').focusout(function(){
+        check_cvv();
+    });
+    $('#zip').focusout(function(){
+        check_zip();
+    });
 
+    //functions to test each required field.
+    function check_name() {
+        var name_length = $('#name').val().length;
+        if (name_length < 3) {
+            $('#name_error').html(' *Name must be 3 or more characters.');
+            $('#name_error').show().css('color', 'red');
+            $nameErrorSpan = true;
+        } else {
+            $('#name_error').hide();
+        } 
+    }
 
-    //validate email
-//     $('.errors').remove();
+    function check_email() {
+        const email_regex = /^([a-zA-Z0-9\\.]+)@([a-zA-Z0-9\\-\\_\\.]+)\.([a-zA-Z0-9]+)$/i;
+        var email = $('#mail').val();
+        if (!email_regex.test(email)) {
+            $('#email_error').html(' *Please enter valid email. (i.e. name@gmail.com');
+            $('#email_error').show().css('color', 'red');
+            $emailErrorSpan = true;
+        } else {
+            $('#email_error').hide();
+        }
+    }
 
-//     return !errors;
+    function check_activity() {
+        var activity_length = $('.activities input:checked').length;
+        if (activity_length <= 0) {
+            $('#activity_error').html(' *Please select one or more activities.');
+            $('#activity_error').show().css('color', 'red');
+            $activityErrorSpan = true;
+        } else {
+            $('#email_error').hide();
+        }
+    }
 
+    function check_creditcard() {
+        var creditcard_length = $('#cc-num').val().length;
+        if (creditcard_length > 16 || creditcard_length < 13) {
+            $('#creditcard_error').html(' *Card number must be between 13 & 16 digits. Omit spaces.');
+            $('#creditcard_error').show().css('color', 'red');
+            $creditcardErrorSpan = true;
+        } else {
+            $('#creditcard_error').hide();
+        }
+    }
+
+    function check_cvv() {
+        var cvv_length = $('#cvv').val().length;
+        if (cvv_length !== 3) {
+            $('#name_cvv').html(' *CVV must be 3 digits.');
+            $('#name_cvv').show().css('color', 'red');
+            $cvvErrorSpan = true;
+        } else {
+            $('#name_cvv').hide();
+        }
+    }
+
+    function check_zip() {
+        var zip_length = $('#zip').val().length;
+        if (zip_length !== 5) {
+            $('#zip_error').html(' *Zip must be 5 digits.');
+            $('#zip_error').show().css('color', 'red');
+            $zipErrorSpan = true;
+        } else {
+            $('#zip_error').hide();
+        }
+    }
+
+    //Required fields to be checked for errors on submit.
+    $('form').on('submit', function(){ //function to initiate on form submission.
+        //resetting the variables to false
+        $nameErrorSpan = false;
+        $emailErrorSpan = false;
+        $activityErrorSpan = false;
+        $creditcardErrorSpan = false;
+        $cvvErrorSpan = false;
+        $zipErrorSpan = false;
+
+        check_name();
+        check_email();
+        check_activity();
+        check_creditcard();
+        check_cvv();
+        check_zip();
+
+        if($nameErrorSpan == false && $emailErrorSpan == false && $activityErrorSpan == false && $creditcardErrorSpan == false && $cvvErrorSpan == false && $zipErrorSpan == false){
+            return true;
+        } else {
+            return false;
+        }
+    });
+});
