@@ -17,16 +17,34 @@ button {
 body {
   font: 1em/1.5;
   color: rgba(233, 24, 153, 0.9);
-	background: #000000;
+  background-attachment: fixed;
+
+ /*BACKGROUND OPTION #1: Uncomment this styling option to show this background. Make sure Option #2 is commented out. */
+ 	/* background-image: url(https://i2.nicepik.com/files/228/1010/440/artificial-intelligence-robot-ai-ki.jpg); */
+	/* background-repeat: repeat;  */
+		/* End of Option 1 */
+
+/*BACKGROUND OPTION #2: Uncomment this styling option to show this background. Make sure Option #1 is commented out. */
+	background-image: url(https://ciolook.com/wp-content/uploads/2018/09/color-2174045__340.png);
+	background-size: cover;
+		/* End of Option 2 */
 }
 
 header {
-	text-align: center;  
-}
+	/* font-size: 1.00em; */
+	text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.85);
+	/* text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6; */
+   	text-align: center;
+	background-color: rgba(0, 0, 0, 0.897);
+	/*opacity: 0.3;*/
+} 
+
 
 h1 {
-	font-size: 2.5em;
-	/* text-shadow: 0 1px 0 rgba(255, 255, 255, 0.85); */
+	font-size: 3.5em;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.85);
+	text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
 	margin: 0;
 }
 
@@ -97,8 +115,10 @@ input {
 
 input:focus {
 	background: rgb(255, 255, 255);
-	border-color: #000000;
-	transition: border-color .4s, background-color .4s;
+	border-color: #0214b3;
+		-webkit-box-shadow: 0px 0px 24px #3872b9;
+		-moz-box-shadow: 0px 0px 24px #2c84f0;
+		 box-shadow: 0px 0px 24px #4195fc;
 }
 
 input[type="checkbox"],
