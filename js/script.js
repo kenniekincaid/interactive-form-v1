@@ -157,14 +157,9 @@ $(function() { //Going for Exceeds
     //functions to test each required field.
     $('#name_error').hide();  //EXTRA CREDIT: multiple conditional error messages & REAL TIME validation...
     function check_name() {  //testing for input, length, and numbers
-        const name_regex = /^[a-zA-Z]+\s[a-zA-Z]*$/;
         const name_length = $('#name').val().length; //the value of the user input will be checked
         if (name_length <= 0) { //if there is no name at all, show error message
             $('#name_error').html(' *Please enter your first and last name.');//error message to appear next to section label on true
-            $('#name_error').show().css('color', 'red');//set color of error message to red
-            $nameErrorSpan = true;
-        } else if (name_regex.test(name_length)) { //if pattern doesn't match regex, error msg will fire.
-            $('#name_error').html(" *Please enter a valid name.");//error message to appear next to section label on true
             $('#name_error').show().css('color', 'red');//set color of error message to red
             $nameErrorSpan = true;
         } else if (name_length <= 3) {//if 3 or less characters, show error message
