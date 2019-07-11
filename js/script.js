@@ -1,5 +1,6 @@
 $(document).ready(function() {//Codes will run when JS script is ready to execute.
- //Start of Project:   
+ 
+//Start of Project:   
 $('#name').focus(); //Set Focus on the first text field section:
 });/* >>>> DO NOT DELETE!!! DOCUMENT LOAD CLOSURE... <<<<< */
 
@@ -18,7 +19,8 @@ $('#title').change(function() { //Function and event handler to control when tex
 //"T-shirt Info" section:
 $('#design option:first').hide(); //hides the 'Select Theme' option from drop-down menu.
 $('#color option').hide(); //hides all other options from view.
-$('#colors-js-puns').hide();//Extra credit to hide color field until designs are chosen.
+$('#colors-js-puns').hide(); //EXTRA CREDIT: to hide color field until designs are chosen.
+
 //CHANGE FUNCTION:
 $('#design').change(function() {//function with event to take place when design is selected/changed.
     $('#design option:selected').val();//gets the value of the design options.
@@ -83,31 +85,31 @@ $('.activities [type="checkbox"]').on('change', function (e) { //Change event li
 
 //PAYMENT SECTION:
 //"Payment Info" section: HINT - it's just like to T-shirt section:
-$('#payment').show().val("credit card");//credit card is the default view.
+$('#payment').show().val("credit card"); //focus is set on the credit card option.
 $('#payment option:contains("Select Payment Method")').hide(); //hides the 'Select Payment Method' option from drop-down menu.
 $('div p:contains("PayPal")').hide(); //hides the paypal section until that payment method is selected.
-$('div p:contains("Bitcoin")').hide();//hides the bitcoin section until that payment method is selected.
+$('div p:contains("Bitcoin")').hide(); //hides the bitcoin section until that payment method is selected.
 
-$('#payment').change(function() {
+$('#payment').change(function() { //on change of the payment options, the following will be executed.
     const $paymentOptions = $(this).val();
-    if ($paymentOptions === "credit card") {
+    if ($paymentOptions === "credit card") {// if this payment option...
         $('#credit-card').show();
-        $('div p:contains("PayPal")').hide();
+        $('div p:contains("PayPal")').hide(); 
+        $('div p:contains("Bitcoin")').hide(); //the other two will be hidden
+    } else if ($paymentOptions === "paypal") { // if this payment option...
+        $('div p:contains("PayPal")').slideDown(700).show(); //added animation
         $('div p:contains("Bitcoin")').hide();
-    } else if ($paymentOptions === "paypal") {
-        $('div p:contains("PayPal")').slideDown(700).show();
-        $('div p:contains("Bitcoin")').hide();
+        $('#credit-card').hide(); //the other two will be hidden
+    } else if ($paymentOptions === "bitcoin") { // if this payment option...
+        $('div p:contains("Bitcoin")').slideDown(700).show(); //added animation
         $('#credit-card').hide();
-    } else if ($paymentOptions === "bitcoin") {
-        $('div p:contains("Bitcoin")').slideDown(700).show();
-        $('#credit-card').hide();
-        $('div p:contains("PayPal")').hide();
+        $('div p:contains("PayPal")').hide(); //the other two will be hidden
     }
 });//Codes are working up to this point! :-D
 
 //FORM VALIDATION & ERROR MESSAGES:
 $(function() { //Going for Exceeds
-    //set all variables to false
+    //Created variables to use and set them to false
     let $nameErrorSpan = false;
     let $emailErrorSpan = false;
     let $activityErrorSpan = false;
@@ -119,11 +121,12 @@ $(function() { //Going for Exceeds
     $('#user_name').append($('<span id="name_error"></span>'));
     $('#user_email').append($('<span id="email_error"></span>'));
     $('#user_activity').append($('<span id="activity_error"></span>'));
-    $('#cc-num').append($('<span id="creditcard_error"></span>'));
-    $('#cvv').append($('<span id="cvv_error"></span>'));
-    $('#zip').append($('<span id="zip_error"></span>'));
+    $('#user_cc-num').append($('<span id="creditcard_error"></span>'));
+    $('#user_cvv').append($('<span id="cvv_error"></span>'));
+    $('#user_zip').append($('<span id="zip_error"></span>')); 
+    // I learned that I could have added a class to the above spans and simplied my codes.
 
-    //Hide all error messages by span ID
+    // Hide all error messages by span ID and will prompt them to show conditionally. 
     $('#name_error').hide();
     $('#email_error').hide();
     $('#activity_error').hide();
@@ -131,14 +134,14 @@ $(function() { //Going for Exceeds
     $('#cvv_error').hide();
     $('#zip_error').hide();
 
-    //Set error messages to show on near input area, focusout function.
-    $('#name').focusout(function(){
-        check_name();
+    //EXTRA CREDIT: Error messages will be displayed as user input value and clicks or tabs out of that field.
+    $('#name').focusout(function(){ //when focus or the cursor is removed from the targeted input fields, that input field will be checked and an error message will fire based on the conditions.
+        check_name(); //when user enters a value into input field and clicks outside of that area, the value will be checked for errors.
     });
     $('#mail').focusout(function(){
         check_email();
     });
-    $('#input [type="checkbox]').focusout(function(){
+    $('#user_activity').focusout(function(){
         check_activity();
     });
     $('#cc-num').focusout(function(){
@@ -152,76 +155,91 @@ $(function() { //Going for Exceeds
     });
 
     //functions to test each required field.
-    function check_name() {
-        var name_length = $('#name').val().length;
-        if (name_length < 3) {
-            $('#name_error').html(' *Name must be 3 or more characters.');
-            $('#name_error').show().css('color', 'red');
+    $('#name_error').hide();  //EXTRA CREDIT: multiple conditional error messages & REAL TIME validation...
+    function check_name() {  //testing for input, length, and numbers
+        const name_regex = /^[a-zA-Z]+\s[a-zA-Z]*$/;
+        const name_length = $('#name').val().length; //the value of the user input will be checked
+        if (name_length <= 0) { //if there is no name at all, show error message
+            $('#name_error').html(' *Please enter your first and last name.');//error message to appear next to section label on true
+            $('#name_error').show().css('color', 'red');//set color of error message to red
+            $nameErrorSpan = true;
+        } else if (name_regex.test(name_length)) { //if pattern doesn't match regex, error msg will fire.
+            $('#name_error').html(" *Please enter a valid name.");//error message to appear next to section label on true
+            $('#name_error').show().css('color', 'red');//set color of error message to red
+            $nameErrorSpan = true;
+        } else if (name_length <= 3) {//if 3 or less characters, show error message
+            $('#name_error').html(' *Name must be greater than 3 characters.');//error message to appear next to section label on true
+            $('#name_error').show().css('color', 'red');//set color of error message to red
             $nameErrorSpan = true;
         } else {
             $('#name_error').hide();
         } 
     }
 
-    function check_email() {
-        const email_regex = /^([a-zA-Z0-9\\.]+)@([a-zA-Z0-9\\-\\_\\.]+)\.([a-zA-Z0-9]+)$/i;
-        var email = $('#mail').val();
-        if (!email_regex.test(email)) {
-            $('#email_error').html(' *Please enter valid email. (i.e. name@gmail.com');
-            $('#email_error').show().css('color', 'red');
+    function check_email() { //EXTRA CREDIT: multiple conditional error messages & REAL TIME validation...
+        const email_regex = /^([a-zA-Z0-9\\.]+)@([a-zA-Z0-9\\-\\_\\.]+)\.([a-zA-Z0-9]+)$/i; //regex stored in varible to test user input
+        const email = $('#mail').val(); //the value of what user types is stored to this variable
+        if (email <= 0) { //if no email entered, this error message will fire.
+            $('#email_error').html(' *Please enter your email address.');//error message to appear next to section label on true
+            $('#email_error').show().css('color', 'red');//set color of error message to red
+            $emailErrorSpan = true;
+        } else if (!email_regex.test(email)) {//condition where user input will be tested against the regex pattern
+            $('#email_error').html(' *Please enter a valid email address. (Ex: name@gmail.com)');//error message to appear next to section label on true
+            $('#email_error').show().css('color', 'red');//set color of error message to red
             $emailErrorSpan = true;
         } else {
             $('#email_error').hide();
         }
     }
 
-    function check_activity() {
-        var activity_length = $('.activities input:checked').length;
-        if (activity_length <= 0) {
-            $('#activity_error').html(' *Please select one or more activities.');
-            $('#activity_error').show().css('color', 'red');
+    function check_activity() {//Validates ON SUBMIT...
+        const activity_length = $('.activities input:checked').length;//the value of the user input will be checked
+        if (activity_length <= 0) { // if no activities are selected... the error below will show
+            $('#activity_error').html(' *Please select one or more activities.');//error message to appear next to section label on true
+            $('#activity_error').show().css('color', 'red');//set color of error message to red
             $activityErrorSpan = true;
         } else {
-            $('#email_error').hide();
+            $('#activity_error').hide();
         }
     }
 
-    function check_creditcard() {
-        var creditcard_length = $('#cc-num').val().length;
-        if (creditcard_length > 16 || creditcard_length < 13) {
-            $('#creditcard_error').html(' *Card number must be between 13 & 16 digits. Omit spaces.');
-            $('#creditcard_error').show().css('color', 'red');
+    //The credit card option is already set by default. It will check for real-time errors.
+    function check_creditcard() {//EXTRA CREDIT: Real time error message
+        const creditcard_length = $('#cc-num').val().length; //the value of the user input will be checked
+        if (creditcard_length < 13 || creditcard_length > 16) { //condition if digits less than 13 and more than 16
+            $('#creditcard_error').html(' *Card number must be between 13 & 16 digits. Omit spaces.'); //if true, this message will print to the page
+            $('#creditcard_error').show().css('color', 'red'); //set color of error message to red
             $creditcardErrorSpan = true;
         } else {
-            $('#creditcard_error').hide();
+            $('#creditcard_error').hide(); //otherwise error will be hidden
         }
     }
 
-    function check_cvv() {
-        var cvv_length = $('#cvv').val().length;
-        if (cvv_length !== 3) {
-            $('#name_cvv').html(' *CVV must be 3 digits.');
-            $('#name_cvv').show().css('color', 'red');
+    function check_cvv() {//EXTRA CREDIT: Real time error message
+        const cvv_length = $('#cvv').val().length; //the value of the user input will be checked
+        if (cvv_length !== 3) { //cvv must be exactly 3 digits or error msg will show
+            $('#cvv_error').html(' *CVV must be 3 digits.');//set color of error message to red
+            $('#cvv_error').show().css('color', 'red');//set color of error message to red
             $cvvErrorSpan = true;
         } else {
-            $('#name_cvv').hide();
+            $('#cvv_error').hide();
         }
     }
 
-    function check_zip() {
-        var zip_length = $('#zip').val().length;
-        if (zip_length !== 5) {
-            $('#zip_error').html(' *Zip must be 5 digits.');
-            $('#zip_error').show().css('color', 'red');
+    function check_zip() {//EXTRA CREDIT: Real time error message
+        const zip_length = $('#zip').val().length; //the value of the user input will be checked
+        if (zip_length !== 5) {//zip code must be exactly 5 digits or error message will show
+            $('#zip_error').html(' *Zip must be 5 digits.');//set color of error message to red
+            $('#zip_error').show().css('color', 'red');//set color of error message to red
             $zipErrorSpan = true;
         } else {
             $('#zip_error').hide();
         }
     }
 
-    //Required fields to be checked for errors on submit.
+    //I'm passing the submit function into real-time function. On submit, all required fields will be checked again or the for will not submit.
     $('form').on('submit', function(){ //function to initiate on form submission.
-        //resetting the variables to false
+        //resetting the variables from the initial function back to false for this function.
         $nameErrorSpan = false;
         $emailErrorSpan = false;
         $activityErrorSpan = false;
@@ -229,6 +247,7 @@ $(function() { //Going for Exceeds
         $cvvErrorSpan = false;
         $zipErrorSpan = false;
 
+        //These are all of the functions that were previously run during real time.
         check_name();
         check_email();
         check_activity();
