@@ -46,6 +46,7 @@ let totalActivityCost = 0;
 //Listening to changes in the activity section, and...
     //Updating and displaying the total activity cost part 1.
 $('.activities [type="checkbox"]').on('change', function (e) { //Change event listener
+    check_activity();
     let $checkboxesClicked = $(this); //clicked DOM input element.
     let parentActivityLabel = $checkboxesClicked.parent(); //Parent text content label element.
     let textContent = parentActivityLabel.text(); //Text within the parent label element.
@@ -108,7 +109,7 @@ $('#payment').change(function() { //on change of the payment options, the follow
 });//Codes are working up to this point! :-D
 
 //FORM VALIDATION & ERROR MESSAGES:
-$(function() { //Going for Exceeds
+ //Going for Exceeds
     //Created variables to use and set them to false
     let $nameErrorSpan = false;
     let $emailErrorSpan = false;
@@ -118,7 +119,7 @@ $(function() { //Going for Exceeds
     let $zipErrorSpan = false;
     
     // Create spans dynamically if not allowed to place in HTML
-    $('#user_name').append($('<span id="name_error"></span>'));
+    $('#user_name').append($('<span id="name_error"></span>'));//next time assign a class to the span and hide it ex: $(class).hide();
     $('#user_email').append($('<span id="email_error"></span>'));
     $('#user_activity').append($('<span id="activity_error"></span>'));
     $('#user_cc-num').append($('<span id="creditcard_error"></span>'));
@@ -127,7 +128,7 @@ $(function() { //Going for Exceeds
     // I learned that I could have added a class to the above spans and simplied my codes.
 
     // Hide all error messages by span ID and will prompt them to show conditionally. 
-    $('#name_error').hide();
+    $('#name_error').hide();//next time assign a class to the span and hide it ex: $(class).hide();
     $('#email_error').hide();
     $('#activity_error').hide();
     $('#creditcard_error').hide();
@@ -141,7 +142,7 @@ $(function() { //Going for Exceeds
     $('#mail').focusout(function(){
         check_email();
     });
-    $('#user_activity').focusout(function(){
+    $('.activities [type="checkbox"]').focusout(function(){
         check_activity();
     });
     $('#cc-num').focusout(function(){
@@ -256,4 +257,3 @@ $(function() { //Going for Exceeds
             return false;
         }
     });
-});
