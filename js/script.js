@@ -188,7 +188,7 @@ $('#payment').change(function() { //on change of the payment options, the follow
         }
     }
 
-    function check_activity() {//Validates ON SUBMIT...
+    function check_activity() {//EXTRA CREDIT: Real time error message
         const activity_length = $('.activities input:checked').length;//the value of the user input will be checked
         if (activity_length <= 0) { // if no activities are selected... the error below will show
             $('#activity_error').html(' *Please select one or more activities.');//error message to appear next to section label on true
