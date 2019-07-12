@@ -11,7 +11,7 @@ $('#title').change(function() { //Function and event handler to control when tex
     const $title = $('#title').val(); //Assigns all under under this ID to this variable. The '$' denotes that it's a jQuery variable.
     if ($title==='other') { // If test is true... 
         $('#other-title').fadeIn(1000); //...the text field will show.
-    } else {  //The following will take place is the test proves false...                   
+    } else {  //The following will take place is the test proves false... 
         $('#other-title').hide(); //The text field remains hidden.
     }
 });//Could have used .trigger('change'); instead of the on change function.
@@ -37,7 +37,6 @@ $('#design').change(function() {//function with event to take place when design 
 }); 
 
 //"Register for Activities" section:
-
 //Creating an element to display the total Activity Cost...
 const $totalCostSpan = $('<span id="totalCost"></span>'); //Creates the total cost span.
 $('.activities').append($totalCostSpan); //On webpage, appends span at end of activity section.
@@ -91,8 +90,12 @@ $('#payment option:contains("Select Payment Method")').hide(); //hides the 'Sele
 $('div p:contains("PayPal")').hide(); //hides the paypal section until that payment method is selected.
 $('div p:contains("Bitcoin")').hide(); //hides the bitcoin section until that payment method is selected.
 
+
+let $paymentOptions = $('#payment').val();//created a global variable the value of payment menu.
 $('#payment').change(function() { //on change of the payment options, the following will be executed.
-    const $paymentOptions = $(this).val();
+    $paymentOptions = $('#payment').val();//
+
+    // const $paymentOptions = $('#payment').val();
     if ($paymentOptions === "credit card") {// if this payment option...
         $('#credit-card').show();
         $('div p:contains("PayPal")').hide(); 
@@ -110,13 +113,14 @@ $('#payment').change(function() { //on change of the payment options, the follow
 
 //FORM VALIDATION & ERROR MESSAGES:
  //Going for Exceeds
-    //Created variables to use and set them to false
+    //Created variables and set them to false for later use...
     let $nameErrorSpan = false;
     let $emailErrorSpan = false;
     let $activityErrorSpan = false;
     let $creditcardErrorSpan = false;
     let $cvvErrorSpan = false;
     let $zipErrorSpan = false;
+    let paymentError = false;
     
     // Create spans dynamically if not allowed to place in HTML
     $('#user_name').append($('<span id="name_error"></span>'));//next time assign a class to the span and hide it ex: $(class).hide();
@@ -148,7 +152,6 @@ $('#payment').change(function() { //on change of the payment options, the follow
     $('#cc-num').on('focusout keyup' , function(){
         check_creditcard();
     });
-
     $('#cvv').on('focusout keyup' , function(){
         check_cvv();
     });
@@ -182,7 +185,7 @@ $('#payment').change(function() { //on change of the payment options, the follow
     function check_email() { //EXTRA CREDIT: multiple conditional error messages & REAL TIME validation...
         const email_regex = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i; //regex stored in varible to test user input
         const email_val = $('#mail').val(); //the value of what user types is stored to this variable
-        if (email <= 0) { //if no email entered, this error message will fire.
+        if (email_val <= 0) { //if no email entered, this error message will fire.
             $('#email_error').html(' *Please enter your email address.');//error message to appear next to section label on true
             $('#email_error').show().css('color', 'red');//set color of error message to red
             $emailErrorSpan = true;
@@ -207,7 +210,7 @@ $('#payment').change(function() { //on change of the payment options, the follow
     }
 
     //The credit card option is already set by default. It will check for real-time errors.
-    function check_creditcard() {//EXTRA CREDIT: Real time error message
+    function check_creditcard() {//EXTRA CREDIT: Real time error message    
         const credit_regex = /^[0-9]{13,16}$/;
         const credit_val = $('#cc-num').val();
         const creditcard_length = $('#cc-num').val().length; //the value of the user input will be checked
@@ -228,7 +231,7 @@ $('#payment').change(function() { //on change of the payment options, the follow
             $('#creditcard_error').show().css('color', 'red'); //set color of error message to red
             $creditcardErrorSpan = true;
         } else {
-            $('#creditcard_error').hide(); //otherwise error will be hidden
+            $('#creditcard_error').hide();
         }
     }
 
@@ -268,9 +271,34 @@ $('#payment').change(function() { //on change of the payment options, the follow
             $('#zip_error').hide();
         }
     }
-    
-    //I'm passing the submit function into real-time function. On submit, all required fields will be checked again or the for will not submit.
-    $('form').on('submit', function(){ //function to initiate on form submission.
+
+    function creditCardValidation(){
+        check_zip();
+        check_creditcard();
+        check_cvv();
+
+        if($zipErrorSpan || $cvvErrorSpan || $creditcardErrorSpan){
+            $paymentError = true;
+        } else {
+            $paymentError = false;
+        }
+    }
+
+    let $paymentError = false;
+
+    function payment(){
+
+        if ($paymentOptions === "credit card") {
+            creditCardValidation();
+        } else {
+            $paymentError = false;
+        }
+    }
+
+    //I'm passing the submit function into real-time function. On submit, all required fields will be checked again.
+    $('form').on('submit', function(e){ //function to initiate on form submission.
+        e.preventDefault();
+        
         //resetting the variables from the initial function back to false for this function.
         $nameErrorSpan = false;
         $emailErrorSpan = false;
@@ -278,36 +306,18 @@ $('#payment').change(function() { //on change of the payment options, the follow
         $creditcardErrorSpan = false;
         $cvvErrorSpan = false;
         $zipErrorSpan = false;
+        $paymentError = false;
 
         //These are all of the functions that were previously run during real time.
         check_name();
         check_email();
         check_activity();
-        check_creditcard();
-        check_cvv();
-        check_zip();
+        payment();
 
-        
-        if($nameErrorSpan == false && $emailErrorSpan == false && $activityErrorSpan == false && $creditcardErrorSpan == false && $cvvErrorSpan == false && $zipErrorSpan == false){
-            return true;
+        if($nameErrorSpan || $emailErrorSpan || $activityErrorSpan || $paymentError){
+            return true; 
         } else {
-            return false;  
-                  
-        }
+            // return false;
+            location.reload(true); 
+        } 
     });
-
-    //Currently trying to figure out how to keep the Credit Card option from preventing the form to be submitted
-    //when Bitcoin and PayPal are selected. Just for kicks, I was considering attaching links for both websites
-    //to the Registration button to make sure the problem is actually fixed.
-    
-    //BRAINSTORMING:
-    // const regSuccess = $('<span class="registered">REGISTRATION SUCCESSFUL!</span>').css('color', 'red');
-    //     $('.payment').append($(regSuccess));
-    //     $('.registered').hide()
-
-        // $('.payment').click(function() {
-    //     if ($('#payment').val() === 'PayPal')
-    //         window.location.href = "https://www.paypal.com/us/signin";
-    //     else
-    //         window.location.href = "https://wallet.bitcoin.com/";
-    //   });
