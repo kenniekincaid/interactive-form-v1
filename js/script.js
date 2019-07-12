@@ -314,10 +314,9 @@ $('#payment').change(function() { //on change of the payment options, the follow
         check_activity();
         payment();
 
-        if($nameErrorSpan || $emailErrorSpan || $activityErrorSpan || $paymentError){
+        if($nameErrorSpan || $emailErrorSpan || $activityErrorSpan || $paymentError){//checking all of the functions for validation errors
             return true; 
         } else {
-            // return false;
-            location.reload(true); 
+            location.reload(true);
         } 
     });
