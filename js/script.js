@@ -14,7 +14,7 @@ $('#title').change(function() { //Function and event handler to control when tex
     } else {  //The following will take place is the test proves false...                   
         $('#other-title').hide(); //The text field remains hidden.
     }
-});//.trigger('change');
+});//Could have used .trigger('change'); instead of the on change function.
 
 //"T-shirt Info" section:
 $('#design option:first').hide(); //hides the 'Select Theme' option from drop-down menu.
@@ -136,35 +136,42 @@ $('#payment').change(function() { //on change of the payment options, the follow
     $('#zip_error').hide();
 
     //EXTRA CREDIT: Error messages will be displayed as user input value and clicks or tabs out of that field.
-    $('#name').focusout(function(){ //when focus or the cursor is removed from the targeted input fields, that input field will be checked and an error message will fire based on the conditions.
+    $('#name').on('focusout keyup' , function(){ //when focus or the cursor is removed from the targeted input fields, that input field will be checked and an error message will fire based on the conditions.
         check_name(); //when user enters a value into input field and clicks outside of that area, the value will be checked for errors.
     });
-    $('#mail').focusout(function(){
+    $('#mail').on('focusout keyup' , function(){
         check_email();
     });
-    $('.activities [type="checkbox"]').focusout(function(){
+    $('.activities [type="checkbox"]').on('focusout keyup' , function(){
         check_activity();
     });
-    $('#cc-num').focusout(function(){
+    $('#cc-num').on('focusout keyup' , function(){
         check_creditcard();
     });
-    $('#cvv').focusout(function(){
+
+    $('#cvv').on('focusout keyup' , function(){
         check_cvv();
     });
-    $('#zip').focusout(function(){
+    $('#zip').on('focusout keyup' , function(){
         check_zip();
     });
 
     //functions to test each required field.
     $('#name_error').hide();  //EXTRA CREDIT: multiple conditional error messages & REAL TIME validation...
     function check_name() {  //testing for input, length, and numbers
+        const name_regex = /^[a-zA-Z]+\s?[a-zA-Z]*$/;
+        const name_val = $('#name').val();
         const name_length = $('#name').val().length; //the value of the user input will be checked
         if (name_length <= 0) { //if there is no name at all, show error message
             $('#name_error').html(' *Please enter your first and last name.');//error message to appear next to section label on true
             $('#name_error').show().css('color', 'red');//set color of error message to red
             $nameErrorSpan = true;
         } else if (name_length <= 3) {//if 3 or less characters, show error message
-            $('#name_error').html(' *Name must be greater than 3 characters.');//error message to appear next to section label on true
+            $('#name_error').html(' *Name must be 3 or more characters.');//error message to appear next to section label on true
+            $('#name_error').show().css('color', 'red');//set color of error message to red
+            $nameErrorSpan = true;
+        } else if (!name_regex.test(name_val)) {//if 3 or less characters, show error message
+            $('#name_error').html(' *Numbers and special characters are not allowed!');//error message to appear next to section label on true
             $('#name_error').show().css('color', 'red');//set color of error message to red
             $nameErrorSpan = true;
         } else {
@@ -173,13 +180,13 @@ $('#payment').change(function() { //on change of the payment options, the follow
     }
 
     function check_email() { //EXTRA CREDIT: multiple conditional error messages & REAL TIME validation...
-        const email_regex = /^([a-zA-Z0-9\\.]+)@([a-zA-Z0-9\\-\\_\\.]+)\.([a-zA-Z0-9]+)$/i; //regex stored in varible to test user input
-        const email = $('#mail').val(); //the value of what user types is stored to this variable
+        const email_regex = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i; //regex stored in varible to test user input
+        const email_val = $('#mail').val(); //the value of what user types is stored to this variable
         if (email <= 0) { //if no email entered, this error message will fire.
             $('#email_error').html(' *Please enter your email address.');//error message to appear next to section label on true
             $('#email_error').show().css('color', 'red');//set color of error message to red
             $emailErrorSpan = true;
-        } else if (!email_regex.test(email)) {//condition where user input will be tested against the regex pattern
+        } else if (!email_regex.test(email_val)) {//condition where user input will be tested against the regex pattern
             $('#email_error').html(' *Please enter a valid email address. (Ex: name@gmail.com)');//error message to appear next to section label on true
             $('#email_error').show().css('color', 'red');//set color of error message to red
             $emailErrorSpan = true;
@@ -201,9 +208,23 @@ $('#payment').change(function() { //on change of the payment options, the follow
 
     //The credit card option is already set by default. It will check for real-time errors.
     function check_creditcard() {//EXTRA CREDIT: Real time error message
+        const credit_regex = /^[0-9]{13,16}$/;
+        const credit_val = $('#cc-num').val();
         const creditcard_length = $('#cc-num').val().length; //the value of the user input will be checked
-        if (creditcard_length < 13 || creditcard_length > 16) { //condition if digits less than 13 and more than 16
-            $('#creditcard_error').html(' *Card number must be between 13 & 16 digits. Omit spaces.'); //if true, this message will print to the page
+        if (creditcard_length <= 0) { //condition if digits less than 13 and more than 16
+            $('#creditcard_error').html(' *Please enter your credit card number.'); //if true, this message will print to the page
+            $('#creditcard_error').show().css('color', 'red'); //set color of error message to red
+            $creditcardErrorSpan = true;
+        } else if (creditcard_length < 13) { //condition if digits less than 13 and more than 16
+            $('#creditcard_error').html(' *Card number cannot be less than 13 digits.'); //if true, this message will print to the page
+            $('#creditcard_error').show().css('color', 'red'); //set color of error message to red
+            $creditcardErrorSpan = true;
+        } else if (creditcard_length > 16) { //condition if digits less than 13 and more than 16
+            $('#creditcard_error').html(' *Card number cannot be more than 16 digits.'); //if true, this message will print to the page
+            $('#creditcard_error').show().css('color', 'red'); //set color of error message to red
+            $creditcardErrorSpan = true;
+        } else if (!credit_regex.test(credit_val)) { //condition if digits less than 13 and more than 16
+            $('#creditcard_error').html(' *Letters and special characters are not allowed.'); //if true, this message will print to the page
             $('#creditcard_error').show().css('color', 'red'); //set color of error message to red
             $creditcardErrorSpan = true;
         } else {
@@ -212,9 +233,19 @@ $('#payment').change(function() { //on change of the payment options, the follow
     }
 
     function check_cvv() {//EXTRA CREDIT: Real time error message
-        const cvv_length = $('#cvv').val().length; //the value of the user input will be checked
-        if (cvv_length !== 3) { //cvv must be exactly 3 digits or error msg will show
-            $('#cvv_error').html(' *CVV must be 3 digits.');//set color of error message to red
+        const cvv_regex = /^[0-9]{3}$/;
+        const cvv_val = $('#cvv').val();//Measures what and quality. Matching or getting specific content.
+        const cvv_length = $('#cvv').val().length; //Measures how much and how far. Use for numbers, scope, array, etc.
+        if (cvv_length <= 0) { //cvv must be exactly 3 digits or error msg will show
+            $('#cvv_error').html(' *Please enter CVV.');//set color of error message to red
+            $('#cvv_error').show().css('color', 'red');//set color of error message to red
+            $cvvErrorSpan = true;
+        } else if (cvv_length !==3) {
+            $('#cvv_error').html(' *CVV must be 3 Numbers.');//set color of error message to red
+            $('#cvv_error').show().css('color', 'red');//set color of error message to red
+            $cvvErrorSpan = true;
+        } else if (!cvv_regex.test(cvv_val)) { //cvv must be exactly 3 digits or error msg will show
+            $('#cvv_error').html(' *CVV must be 3 Numbers.');//set color of error message to red
             $('#cvv_error').show().css('color', 'red');//set color of error message to red
             $cvvErrorSpan = true;
         } else {
@@ -223,16 +254,21 @@ $('#payment').change(function() { //on change of the payment options, the follow
     }
 
     function check_zip() {//EXTRA CREDIT: Real time error message
+        const zip_regex = /^[0-9]{5}$/;
+        const zip_val = $('#zip').val();
         const zip_length = $('#zip').val().length; //the value of the user input will be checked
         if (zip_length !== 5) {//zip code must be exactly 5 digits or error message will show
-            $('#zip_error').html(' *Zip must be 5 digits.');//set color of error message to red
+            $('#zip_error').html(' *Please enter 5 digit zip code.');//set color of error message to red
             $('#zip_error').show().css('color', 'red');//set color of error message to red
             $zipErrorSpan = true;
+        } else if(!zip_regex.test(zip_val)) {
+            $('#zip_error').html(' *Numbers only please!');//set color of error message to red
+            $('#zip_error').show().css('color', 'red');//set color of error message to red
         } else {
             $('#zip_error').hide();
         }
     }
-
+    
     //I'm passing the submit function into real-time function. On submit, all required fields will be checked again or the for will not submit.
     $('form').on('submit', function(){ //function to initiate on form submission.
         //resetting the variables from the initial function back to false for this function.
@@ -251,9 +287,27 @@ $('#payment').change(function() { //on change of the payment options, the follow
         check_cvv();
         check_zip();
 
+        
         if($nameErrorSpan == false && $emailErrorSpan == false && $activityErrorSpan == false && $creditcardErrorSpan == false && $cvvErrorSpan == false && $zipErrorSpan == false){
             return true;
         } else {
-            return false;
+            return false;  
+                  
         }
     });
+
+    //Currently trying to figure out how to keep the Credit Card option from preventing the form to be submitted
+    //when Bitcoin and PayPal are selected. Just for kicks, I was considering attaching links for both websites
+    //to the Registration button to make sure the problem is actually fixed.
+    
+    //BRAINSTORMING:
+    // const regSuccess = $('<span class="registered">REGISTRATION SUCCESSFUL!</span>').css('color', 'red');
+    //     $('.payment').append($(regSuccess));
+    //     $('.registered').hide()
+
+        // $('.payment').click(function() {
+    //     if ($('#payment').val() === 'PayPal')
+    //         window.location.href = "https://www.paypal.com/us/signin";
+    //     else
+    //         window.location.href = "https://wallet.bitcoin.com/";
+    //   });
